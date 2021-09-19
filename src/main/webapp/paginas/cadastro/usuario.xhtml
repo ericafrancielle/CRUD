@@ -1,0 +1,83 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:composite="http://java.sun.com/jsf/composite"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:of="http://omnifaces.org/functions">
+
+<head>
+<title>Formulario de Cadastro</title>
+</head>
+<body>
+	<div class="container">
+		<h:form action="" id="formulario">
+
+			<p:panel header="Novo Usuário">
+
+				<div>
+					<p:outputLabel for="nomecompleto">Nome Completo    </p:outputLabel>
+
+
+					<h:inputText id="nomecompleto"
+						value="#{cadastroUsuarioBean.usuario.nome}" required="true"
+						requiredMessage="Preencha o campo Nome Inicial!"></h:inputText>
+				</div>
+
+
+
+				<!-- <div class="campo-data">
+					<div class="data">
+						<p:outputLabel for="data" value="Data" />
+						<p:inputMask id="date"
+							value="#{cadastroUsuarioBean.usuario.dataNascimento}"
+							mask="99/99/9999" />
+					</div>
+				</div> -->
+				<div>
+					<p:outputLabel value="Data de Nascimento :">
+					</p:outputLabel>
+					<h:inputText value="#{cadastroUsuarioBean.usuario.dataNascimento}"
+						required="true" requiredMessage="Informe Data de Nascimento"></h:inputText>
+				</div>
+				<div>
+					<p:outputLabel value="Comunidade : ">
+					</p:outputLabel>
+					<h:inputText value="#{cadastroUsuarioBean.usuario.comunidade}"
+						required="true"></h:inputText>
+				</div>
+				<div>
+					<p:outputLabel value="Telefone : ">
+					</p:outputLabel>
+					<h:inputText value="#{cadastroUsuarioBean.usuario.telefone}"
+						required="true"></h:inputText>
+				</div>
+				<div>
+					<p:outputLabel value="E-mail : ">
+					</p:outputLabel>
+					<h:inputText value="#{cadastroUsuarioBean.usuario.email}"
+						required="true"></h:inputText>
+				</div>
+				<div>
+					<p:outputLabel value="LOGIN : ">
+					</p:outputLabel>
+					<h:inputText value="#{cadastroUsuarioBean.usuario.login}"
+						required="true"></h:inputText>
+				</div>
+				<div>
+					<p:outputLabel value="SENHA : ">
+					</p:outputLabel>
+					<h:inputSecret id="senha" label="Senha" required="true"
+						value="#{cadastroUsuarioBean.usuario.senha}">
+					</h:inputSecret>
+				</div>
+
+				<p:commandButton value="Cadastrar"
+					actionListener="#{cadastroUsuarioBean.cadastrar()}" process="@form"></p:commandButton>
+			</p:panel>
+		</h:form>
+	</div>
+</body>
+</html>

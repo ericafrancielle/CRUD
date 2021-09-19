@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<title>Cadastro de Comunidade</title>
+</h:head>
+<h:body>
+	<p:growl id="mensagem" />
+	<h:form id="formlistagem">
+		<p:panelGrid>
+			<p:dataTable id="comunidades" var="comunidade"
+				value="#{cadastroComunidadeBean.comunidades}" rows="5"
+				rowKey="#{comunidade.id}"
+				selection="#{cadastroComunidadeBean.selecionada}"
+				selectionMode="single" paginator="true">
+				<f:facet name="footer">
+					<p:commandButton value="Nova Comunidade"
+						oncomplete="PF('cadastrocomunidade').show();"
+						actionListener="#{cadastroComunidadeBean.novo()}"></p:commandButton>
+				</f:facet>
+
+				<p:column headerText="Id" sortBy="#{comunidade.id}">
+					<h:outputText value="#{comunidade.id}" />
+				</p:column>
+				<p:column headerText="Nome" sortBy="#{comunidade.nomeComunidade}"
+					filterBy="#{comunidade.nomeComunidade}">
+					<h:outputText value="#{comunidade.nomeComunidade}" />
+				</p:column>
+				<p:column headerText="Endereço">
+					<h:outputText value="#{comunidade.endereco}" />
+				</p:column>
+				<p:column headerText="Telefone">
+					<h:outputText value="#{comunidade.telefone}" />
+				</p:column>
+
+
+				<p:column headerText="Editar">
+					<p:commandButton icon="ui-icon-pencil"
+						actionListener="#{cadastroComunidadeBean.editar}"
+						oncomplete="PF('cadastrocomunidade').show();"
+						update=":mensagem :formCadastro:painel">
+
+						<f:attribute name="comunidadeselecionada" value="#{comunidade}" />
+					</p:commandButton>
+				</p:column>
+
+				<p:column headerText="Excluir">
+					<p:commandButton icon="ui-icon-trash"
+						actionListener="#{cadastroComunidadeBean.excluirComunidade(comunidade.id)}"
+						update=":mensagem :formlistagem">
+						<p:confirm header="Confirmação"
+							message="Deseja excluir esse registro?" icon="ui-icon-alert" />
+						<f:attribute name="selecionada"
+							value="#{cadastroComunidadeBean.comunidade}" />
+					</p:commandButton>
+				</p:column>
+			</p:dataTable>
+		</p:panelGrid>
+	</h:form>
+
+	<p:confirmDialog global="true">
+		<p:commandButton value="Sim" type="button"
+			styleClass="ui-confirmdialog-yes" icon="ui-icon-check"></p:commandButton>
+		<p:commandButton value="Não" type="button"
+			styleClass="ui-confirmdialog-no" icon="ui-icon-close"></p:commandButton>
+	</p:confirmDialog>
+
+	<p:dialog header="Formulário de Cadastro de Comunidade"
+		widgetVar="cadastrocomunidade" draggable="false" resizable="false"
+		modal="true">
+		<p:panel>
+
+			<h:form id="formCadastro">
+				<p:panelGrid id="painel" columns="3">
+					<div>
+						<p:outputLabel for="nome">Nome</p:outputLabel>
+						<p:inputText id="nome"
+							value="#{cadastroComunidadeBean.comunidade.nomeComunidade}"
+							required="true" requiredMessage="Preencha o campo Nome!"></p:inputText>
+					</div>
+
+					<div>
+						<p:outputLabel value="Endereço">
+						</p:outputLabel>
+						<h:inputText value="#{cadastroComunidadeBean.comunidade.endereco}"
+							required="true" requiredMessage="Preencha o campo endereço!"></h:inputText>
+					</div>
+					<div class="campo-telefone">
+						<p:outputLabel for="telefone" value="Telefone" />
+						<p:inputMask id="telefone"
+							value="#{cadastroComunidadeBean.comunidade.telefone}"
+							mask="(999) 99999-9999" validateMask="true" />
+					</div>
+
+
+				</p:panelGrid>
+				
+				<p:commandButton value="Salvar"
+					actionListener="#{cadastroComunidadeBean.cadastrar()}"
+					process="@form" update=":mensagem :formCadastro:painel :formlistagem"></p:commandButton>
+
+			</h:form>
+
+
+		</p:panel>
+
+	</p:dialog>
+
+
+	<p:dialog header="Atualização de Cadastro" widgetVar="editacadastro">
+
+
+		<h:form id="atualizaCadastro">
+			<p:panelGrid id="atualizaPainel" columns="3">
+				<div>
+					<p:outputLabel for="nome">Nome</p:outputLabel>
+					<p:inputText id="nome"
+						value="#{cadastroComunidadeBean.selecionada.nomeComunidade}"
+						required="true" requiredMessage="Preencha o campo Nome!"></p:inputText>
+				</div>
+
+				<div>
+					<p:outputLabel value="Endereço">
+					</p:outputLabel>
+					<h:inputText value="#{cadastroComunidadeBean.selecionada.endereco}"
+						required="true" requiredMessage="Preencha o campo endereço!"></h:inputText>
+				</div>
+				<div class="campo-telefone">
+					<p:outputLabel for="telefone" value="Telefone" />
+					<p:inputMask id="telefone"
+						value="#{cadastroComunidadeBean.selecionada.telefone}"
+						mask="(999) 99999-9999" validateMask="true" />
+
+
+
+				</div>
+			</p:panelGrid>
+			<p:commandButton value="Atualizar"
+				actionListener="#{cadastroComunidadeBean}" process="@form"
+				update=":mensagem"></p:commandButton>
+		</h:form>
+
+
+
+	</p:dialog>
+
+</h:body>
+</html>

@@ -1,0 +1,45 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:composite="http://java.sun.com/jsf/composite"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+<head>
+<title>Bem vindo</title>
+</head>
+
+<body>
+	<div class='container'>
+		<h2>Plataforma Virtual Ministérios de Música</h2>
+		<div class='log'>
+			<h:form>
+
+				<h:outputLabel value="Usuário" for="usuario"></h:outputLabel>
+				<br />
+				<h:inputText id="usuario" label="Usuário" required="true"
+					requiredMessage="O campo login é obrigatório"
+					value="#{loginBean.usuario.login}" />
+				<br />
+				<h:outputLabel value="Senha" for="senha" />
+				<br />
+				<h:inputSecret id="senha" label="Senha" required="true"
+					value="#{loginBean.usuario.senha}"
+					requiredMessage="O campo senha é obrigatório" />
+				<br />
+				<br />
+				 <h:commandButton action="#{loginBean.consultarLogin()}" value="Logar"  /> 
+
+				<br />
+				
+				<a href="/escala/faces/paginas/cadastro/usuario.xhtml">
+					Ainda não possui cadastro?Casdastre-se aqui </a>
+
+			</h:form>
+		</div>
+	</div>
+</body>
+
+</html>
+
