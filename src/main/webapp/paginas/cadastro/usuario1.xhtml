@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<title>Cadastro de Usuário</title>
+</h:head>
+<h:body>
+	<p:growl id="mensagem"></p:growl>
+	<h:form id="formlistagem">
+		<p:panelGrid>
+			<p:dataTable id="usuarios" var="usuario"
+				value="#{cadastroUsuarioBean.usuarios}" rows="5"
+				rowKey="#{usuario.id}"
+				selection="#{cadastroUsuarioBean.selecionado}"
+				selectionMode="single" paginator="true">
+				<f:facet name="footer">
+					<p:commandButton value="Novo Usuario"
+						oncomplete="PF('cadastrousuario').show();"
+						actionListener="#{cadastroUsuarioBean.novo()}"
+						update=":formCadastro:painel :mensagem">
+					</p:commandButton>
+				</f:facet>
+
+				<p:column headerText="Id: " sortBy="#{usuario.id}">
+					<h:outputText value="#{usuario.id}" />
+				</p:column>
+				<p:column headerText="Nome Completo " sortBy="#{usuario.nome}"
+					filterBy="#{usuario.nome}">
+					<h:outputText value="#{usuario.nome}" />
+
+				</p:column>
+				<p:column headerText="Data de Nascimento: ">
+					<h:outputText value="#{usuario.dataNascimento}">
+						<f:convertDateTime locale="pt_BR" />
+					</h:outputText>
+				</p:column>
+				<p:column headerText="Comunidade ">
+					<h:outputText value="#{usuario.comunidade}" />
+				</p:column>
+				<p:column headerText="Telefone ">
+					<h:outputText value="#{usuario.telefone}" />
+				</p:column>
+
+				<p:column headerText="E-mail ">
+					<h:outputText value="#{usuario.email}"></h:outputText>
+				</p:column>
+
+				<p:column headerText="Login ">
+					<h:outputText value="#{usuario.login}" />
+				</p:column>
+
+				<!-- <p:column headerText="Senha" >
+				<h:outputText value="#{usuario.senha}"/>
+				</p:column> -->
+				<p:column headerText="Editar">
+					<p:commandButton icon="ui-icon-pencil"
+						actionListener="#{cadastroUsuarioBean.editar}"
+						oncomplete="PF('cadastrousuario').show();"
+						update=":mensagem :formCadastro:painel">
+
+						<f:attribute name="usuarioselecionado" value="#{usuario}" />
+					</p:commandButton>
+				</p:column>
+
+				<p:column headerText="Excluir">
+					<p:commandButton icon="ui-icon-trash"
+						actionListener="#{cadastroUsuarioBean.excluirUsuario(usuario.id)}"
+						update=":mensagem :formlistagem">
+						<p:confirm header="Confirmação"
+							message="Deseja excluir esse registro?" icon="ui-icon-alert" />
+						<f:attribute name="selecionado"
+							value="#{cadastroUsuarioBean.usuario}" />
+					</p:commandButton>
+				</p:column>
+			</p:dataTable>
+		</p:panelGrid>
+	</h:form>
+	<p:confirmDialog global="true">
+		<p:commandButton value="Sim" type="button"
+			styleClass="ui-confirmdialog-yes" icon="ui-icon-check"></p:commandButton>
+		<p:commandButton value="Não" type="button"
+			styleClass="ui-confirmdialog-no" icon="ui-icon-close"></p:commandButton>
+	</p:confirmDialog>
+
+	<p:dialog header="Formulário de Cadastro de Usuário"
+		widgetVar="cadastrousuario" draggable="false" resizable="false"
+		modal="true">
+		<p:panel>
+
+			<h:form id="formCadastro">
+				<p:panelGrid id="painel" columns="3">
+
+					<div class="campo-nome">
+						<p:outputLabel for="nome">Nome:</p:outputLabel>
+						<p:inputText id="nome" value="#{cadastroUsuarioBean.usuario.nome}"
+							required="true" requiredMessage="Preencha o campo Nome!"></p:inputText>
+					</div>
+
+					<div class="campo-data">
+
+						<p:outputLabel for="data" value="Data de Nascimento: "></p:outputLabel>
+						<p:calendar id="data"
+							value="#{cadastroUsuarioBean.usuario.dataNascimento}"
+							locale="pt_BR" />
+
+
+					</div>
+
+					<div class="campo-telefone">
+						<p:outputLabel for="telefone" value="Telefone" />
+						<p:inputMask id="telefone"
+							value="#{cadastroUsuarioBean.usuario.telefone}"
+							mask="(999) 99999-9999" validateMask="true" />
+					</div>
+
+					<div class="campo-email">
+						<p:outputLabel value="E-mail: "></p:outputLabel>
+						<h:inputText value="#{cadastroUsuarioBean.usuario.email}"
+							required="true" requiredMessage="Preencha o campo e-mail" />
+					</div>
+
+					<div class="campo-comunidade">
+						<p:outputLabel value="Comunidade : ">
+							<p:selectOneMenu filter="true"
+								value="#{cadastroUsuarioBean.usuario.comunidade}" converter="omnifaces.SelectItemsConverter">
+								<f:selectItem noSelectionOption="true" itemLabel="Selecione uma Comunidade" />
+								<f:selectItems value="#{cadastroUsuarioBean.comunidades}"
+									var="comunidade" itemValue="#{comunidade}"
+									itemLabel="#{comunidade.nomeComunidade}" />
+							</p:selectOneMenu>
+						</p:outputLabel>
+					</div>
+					<div class="campo-login">
+						<p:outputLabel value="Login: "></p:outputLabel>
+						<h:inputText value="#{cadastroUsuarioBean.usuario.login}"
+							required="true" requiredMessage="Preencha o campo login!" />
+					</div>
+
+					<div class="campo-senha">
+						<p:outputLabel value="Senha: "></p:outputLabel>
+						<h:inputSecret id="senha" label="Senha" required="true"
+							requiredMessage="Preencha o campo senha!"
+							value="#{cadastroUsuarioBean.usuario.senha}">
+						</h:inputSecret>
+
+
+					</div>
+
+				</p:panelGrid>
+				<p:commandButton value="Salvar"
+					actionListener="#{cadastroUsuarioBean.cadastrar()}" process="@form"
+					update=":mensagem :formCadastro:painel :formlistagem"></p:commandButton>
+			</h:form>
+		</p:panel>
+	</p:dialog>
+</h:body>
+</html>
