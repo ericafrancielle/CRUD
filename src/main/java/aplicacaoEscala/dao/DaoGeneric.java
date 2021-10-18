@@ -7,9 +7,8 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 
-import aplicacaoEscala.model.Comunidade;
-
 public class DaoGeneric<Entidade> {
+
 
 	public void salvar(Entidade entidade) throws Exception {
 		EntityManager gerenciarEntidade = getEntityManager();
@@ -135,5 +134,6 @@ public class DaoGeneric<Entidade> {
 		}
 		return resultado;
 	}
+	
 
 }

@@ -8,9 +8,9 @@ import javax.persistence.TypedQuery;
 import aplicacaoEscala.model.Usuario;
 
 public class UsuarioDao extends DaoGeneric<Usuario> {
-	
+
 	@SuppressWarnings("unused")
-	public void consultarLogin() {
+	public boolean consultarLogin() {
 		try {
 			EntityManager gerenciarEntidade = getEntityManager();
 			@SuppressWarnings("unchecked")
@@ -19,10 +19,12 @@ public class UsuarioDao extends DaoGeneric<Usuario> {
 			Usuario usuarioEncontrado = query.getSingleResult();
 			System.out.println("Usuário já está cadastrado ");
 			gerenciarEntidade.close();
-
+             return false;
 		} catch (Exception e) {
 			System.out.println("Login não é cadastrado");
+			return true;
 		}
 
 	}
+
 }

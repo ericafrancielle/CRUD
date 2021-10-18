@@ -22,6 +22,7 @@ public class Comunidade implements Serializable {
 	private String nomeComunidade;
 	@Column(name = "Endereco_Comunidade", nullable = false, unique = true)
 	private String endereco;
+
 	@Column(name = "Telefone_Comunidade", nullable = false, unique = true)
 	private String telefone;
 
@@ -52,4 +53,9 @@ public class Comunidade implements Serializable {
 	public void setTelefone(String telefone) {
 		this.telefone = telefone;
 	}
+	
+	 @Override public String toString() { return String.format("%s[%s]",
+	 getClass().getSimpleName(), getNomeComunidade()); }
+	  
+	 
 }

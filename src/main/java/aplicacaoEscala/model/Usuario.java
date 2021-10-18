@@ -1,13 +1,15 @@
 package aplicacaoEscala.model;
 
 import java.io.Serializable;
-import java.sql.Date;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -28,16 +30,17 @@ public class Usuario implements Serializable {
 
 	@Column(name = "NASCIMENTO_USUARIO")
 	@Temporal(TemporalType.DATE)
-	private java.util.Date dataNascimento;
+	private Date dataNascimento;
 
-	@Column(name = "COMUNIDADE_USUARIO", nullable = false)
-	private String Comunidade;
+	@ManyToOne
+	@JoinColumn(name = "COMUNIDADE_USUARIO", nullable = false)
+	private Comunidade Comunidade;
 
 	@Column(name = "EMAIL_USUARIO", unique = true, nullable = false)
 	private String email;
 
 	@Column(name = "TELEFONE_USUARIO", unique = true, nullable = false)
-	private Integer telefone;
+	private String telefone;
 
 	@Column(name = "LOGIN", unique = true, nullable = false)
 	private String login;
@@ -57,7 +60,7 @@ public class Usuario implements Serializable {
 		this.nome = nome;
 	}
 
-	public java.util.Date getDataNascimento() {
+	public Date getDataNascimento() {
 		return dataNascimento;
 	}
 
@@ -65,11 +68,11 @@ public class Usuario implements Serializable {
 		this.dataNascimento = dataNascimento;
 	}
 
-	public String getComunidade() {
+	public aplicacaoEscala.model.Comunidade getComunidade() {
 		return Comunidade;
 	}
 
-	public void setComunidade(String comunidade) {
+	public void setComunidade(aplicacaoEscala.model.Comunidade comunidade) {
 		Comunidade = comunidade;
 	}
 
@@ -81,11 +84,11 @@ public class Usuario implements Serializable {
 		this.email = email;
 	}
 
-	public Integer getTelefone() {
+	public String getTelefone() {
 		return telefone;
 	}
 
-	public void setTelefone(Integer telefone) {
+	public void setTelefone(String telefone) {
 		this.telefone = telefone;
 	}
 
@@ -134,9 +137,9 @@ public class Usuario implements Serializable {
 		return true;
 	}
 
-	@Override
-	public String toString() {
-		return super.toString();
-	}
+	/*
+	 * @Override public String toString() { return String.format("%s[id=%d]",
+	 * getClass().getSimpleName(), getId()); }
+	 */
 
 }
