@@ -46,7 +46,7 @@ public class CadastroUsuarioBean implements Serializable {
 			comunidades = dao.listar(comunidade);
 
 		} catch (RuntimeException erro) {
-			Messages.addFlashGlobalError("Erro ao ao tentar gerar um novo usuario");
+			Messages.addFlashGlobalError("Erro ao tentar gerar um novo usuario");
 			erro.printStackTrace();
 		}
 
@@ -76,6 +76,10 @@ public class CadastroUsuarioBean implements Serializable {
 	}
 
 	public void editar(ActionEvent evento) {
+		comunidade = new Comunidade();
+		DaoComunidade dao = new DaoComunidade();
+		comunidades = dao.listar(comunidade);
+		
 		usuario = (Usuario) evento.getComponent().getAttributes().get("usuarioselecionado");
 		Messages.addFlashGlobalInfo("Nome: " + usuario.getNome());
 

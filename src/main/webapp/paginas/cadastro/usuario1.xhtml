@@ -126,8 +126,10 @@
 					<div class="campo-comunidade">
 						<p:outputLabel value="Comunidade : ">
 							<p:selectOneMenu filter="true"
-								value="#{cadastroUsuarioBean.usuario.comunidade}" converter="omnifaces.SelectItemsConverter">
-								<f:selectItem noSelectionOption="true" itemLabel="Selecione uma Comunidade" />
+								value="#{cadastroUsuarioBean.usuario.comunidade}"
+								converter="omnifaces.SelectItemsConverter">
+								<f:selectItem noSelectionOption="true"
+									itemLabel="Selecione uma Comunidade" />
 								<f:selectItems value="#{cadastroUsuarioBean.comunidades}"
 									var="comunidade" itemValue="#{comunidade}"
 									itemLabel="#{comunidade.nomeComunidade}" />
@@ -157,5 +159,79 @@
 			</h:form>
 		</p:panel>
 	</p:dialog>
+	<p:dialog header="Atualização de Cadastro de Usuario"
+		widgetVar="editacadastrousuario">
+
+
+		<h:form id="atualizaCadastro">
+			<p:panelGrid id="atualizaPainel" columns="3">
+
+
+
+				<div>
+					<p:outputLabel for="nome">Nome:</p:outputLabel>
+					<p:inputText id="nome"
+						value="#{cadastroUsuarioBean.selecionado.nome}" required="true"
+						requiredMessage="Preencha o campo Nome!"></p:inputText>
+
+
+				</div>
+				<div>
+					<p:outputLabel for="data">Data de Nascimento:</p:outputLabel>
+					<p:inputText id="data"
+						value="#{cadastroUsuarioBean.selecionado.dataNascimento}">
+					</p:inputText>
+
+					<div>
+						<p:outputLabel value="Comunidade : ">
+							<p:selectOneMenu filter="true"
+								value="#{cadastroUsuarioBean.selecionado.comunidade}"
+								converter="omnifaces.SelectItemsConverter">
+								<f:selectItem noSelectionOption="true"
+									itemLabel="Selecione uma Comunidade" />
+								<f:selectItems value="#{cadastroUsuarioBean.comunidades}"
+									var="comunidade" itemValue="#{comunidade}"
+									itemLabel="#{comunidade.nomeComunidade}" />
+							</p:selectOneMenu>
+						</p:outputLabel>
+					</div>
+
+					<div class="campo-telefone">
+						<p:outputLabel for="telefone" value="Telefone" />
+						<p:inputMask id="telefone"
+							value="#{cadastroUsuarioBean.selecionado.telefone}"
+							mask="(999) 99999-9999" validateMask="true" />
+					</div>
+
+					<div class="campo-email">
+						<p:outputLabel value="E-mail: "></p:outputLabel>
+						<h:inputText value="#{cadastroUsuarioBean.selecionado.email}"
+							required="true" requiredMessage="Preencha o campo e-mail" />
+					</div>
+
+					<div class="campo-login">
+						<p:outputLabel value="Login: "></p:outputLabel>
+						<h:inputText value="#{cadastroUsuarioBean.selecionado.login}"
+							required="true" requiredMessage="Preencha o campo login!" />
+					</div>
+
+					<div class="campo-senha">
+						<p:outputLabel value="Senha: "></p:outputLabel>
+						<h:inputSecret id="senha" label="Senha" required="true"
+							requiredMessage="Preencha o campo senha!"
+							value="#{cadastroUsuarioBean.selecionado.senha}">
+						</h:inputSecret>
+					</div>
+				</div>
+			</p:panelGrid>
+			<p:commandButton value="Atualizar"
+				actionListener="#{cadastroUsuarioBean}" process="@form"
+				update=":mensagem"></p:commandButton>
+		</h:form>
+
+
+
+	</p:dialog>
+
 </h:body>
 </html>
