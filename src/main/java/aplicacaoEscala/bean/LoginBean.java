@@ -1,32 +1,63 @@
 package aplicacaoEscala.bean;
 
+import java.io.Serializable;
+import java.util.List;
+
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.RequestScoped;
+import javax.faces.bean.ViewScoped;
+
+import org.omnifaces.util.Messages;
 
 import aplicacaoEscala.dao.UsuarioDao;
 import aplicacaoEscala.model.Usuario;
 
+@SuppressWarnings("serial")
 @ManagedBean
-@RequestScoped
-public class LoginBean {
+@ViewScoped
+public class LoginBean implements Serializable {
 
 	private Usuario usuario;
 	private UsuarioDao dao;
-	private String loginUsuario;
 
 	@PostConstruct
-	public void logar() {
+	public void inicializar() {
 		usuario = new Usuario();
 		dao = new UsuarioDao();
-		loginUsuario = usuario.getLogin();
-		dao.consultarLogin();
-		redireciona();
+		try {
+			List<Usuario> retornaTodosUsuarios = dao.retornaTodosUsuarios();
+			retornaTodosUsuarios.forEach(System.out::println);
+			
+			
+			Usuario usuario = dao.getUserByLogin("teste");
+			
+			System.out.println(usuario);
+			
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+	}
+
+	public void logar() {
+		try {
+			
+			if (dao.consultarLogin(usuario.getLogin(),usuario.getSenha()) == true) {
+				Messages.addFlashGlobalInfo("Usuario é cadastrado.Acesso permitido");
+				redireciona();
+			} else {
+				Messages.addGlobalError("Usuario e/ou senha não não correspondem aos já existentes.");
+			}
+		} catch (Exception e) {
+			System.out.println("Erro ao consultar login");
+			e.printStackTrace();
+		}
 
 	}
 
 	public String redireciona() {
-		return "pagina?faces-redirect=true";/* /cadastro/index.hhtm */
+		return "index?faces-redirect=true";
 	}
 
 	public Usuario getUsuario() {
@@ -44,5 +75,6 @@ public class LoginBean {
 	public void setDao(UsuarioDao dao) {
 		this.dao = dao;
 	}
+
 
 }

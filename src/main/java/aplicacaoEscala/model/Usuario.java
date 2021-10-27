@@ -10,12 +10,18 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 @Entity
 @Table(name = "USUARIOS")
+@NamedQueries({
+	@NamedQuery(name = "retornaTudo", query = "select u from Usuario u"),
+	@NamedQuery(name = "obterUsuarioPorLogin", query  = "select u from Usuario u where u.login = :login")
+})
 public class Usuario implements Serializable {
 
 	private static final long serialVersionUID = 7259291110393446799L;
@@ -142,4 +148,8 @@ public class Usuario implements Serializable {
 	 * getClass().getSimpleName(), getId()); }
 	 */
 
+	@Override
+	public String toString() {
+		return "login: ".concat(login) + "senha".concat(senha);
+	}
 }

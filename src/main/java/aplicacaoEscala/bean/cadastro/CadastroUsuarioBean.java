@@ -56,7 +56,7 @@ public class CadastroUsuarioBean implements Serializable {
 	
 		try {
 			nome_Usuario = usuario.getNome();
-			if (dao.consultarLogin() == true) {
+			if (dao.consultarLogin(usuario.getLogin(), usuario.getSenha()) == false) {
 				dao.salvar(usuario); 
 				String msg = "Usuario = " + usuario.getNome() + " salvo com sucesso!";
 				FacesMessage menssagem = new FacesMessage(FacesMessage.SEVERITY_INFO, msg, msg);
