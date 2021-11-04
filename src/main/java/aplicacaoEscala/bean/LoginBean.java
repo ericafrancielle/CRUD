@@ -1,7 +1,6 @@
 package aplicacaoEscala.bean;
 
 import java.io.Serializable;
-import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
@@ -9,6 +8,7 @@ import javax.faces.bean.ViewScoped;
 
 import org.omnifaces.util.Messages;
 
+import aplicaEscala.util.CriptografiaUtil;
 import aplicacaoEscala.dao.UsuarioDao;
 import aplicacaoEscala.model.Usuario;
 
@@ -24,36 +24,27 @@ public class LoginBean implements Serializable {
 	public void inicializar() {
 		usuario = new Usuario();
 		dao = new UsuarioDao();
+
+	}
+
+	public void logar() {
 		try {
-			List<Usuario> retornaTodosUsuarios = dao.retornaTodosUsuarios();
-			retornaTodosUsuarios.forEach(System.out::println);
-			
-			
-			Usuario usuario = dao.getUserByLogin("teste");
-			
-			System.out.println(usuario);
-			
-			
+
+			usuario.setSenha(CriptografiaUtil.criptografa(usuario.getSenha()));
+
+			if (usuarioSenhaOk()) {
+				redireciona();
+			} else {
+				Messages.addGlobalError("Usuario ou senha não correspondem aos cadastrados.");
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
 	}
 
-	public void logar() {
-		try {
-			
-			if (dao.consultarLogin(usuario.getLogin(),usuario.getSenha()) == true) {
-				Messages.addFlashGlobalInfo("Usuario é cadastrado.Acesso permitido");
-				redireciona();
-			} else {
-				Messages.addGlobalError("Usuario e/ou senha não não correspondem aos já existentes.");
-			}
-		} catch (Exception e) {
-			System.out.println("Erro ao consultar login");
-			e.printStackTrace();
-		}
-
+	private boolean usuarioSenhaOk() {
+		return dao.usuarioEsenhaSaoCompativeisComBanco(usuario.getLogin(), usuario.getSenha());
 	}
 
 	public String redireciona() {
@@ -75,6 +66,5 @@ public class LoginBean implements Serializable {
 	public void setDao(UsuarioDao dao) {
 		this.dao = dao;
 	}
-
 
 }

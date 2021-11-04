@@ -12,6 +12,7 @@ import javax.faces.event.ActionEvent;
 
 import org.omnifaces.util.Messages;
 
+import aplicaEscala.util.CriptografiaUtil;
 import aplicacaoEscala.dao.DaoComunidade;
 import aplicacaoEscala.dao.UsuarioDao;
 import aplicacaoEscala.model.Comunidade;
@@ -52,16 +53,18 @@ public class CadastroUsuarioBean implements Serializable {
 
 	}
 
-	public void cadastrar()  {
-	
+	public void cadastrar() {
+
 		try {
-			nome_Usuario = usuario.getNome();
-			if (dao.consultarLogin(usuario.getLogin(), usuario.getSenha()) == false) {
-				dao.salvar(usuario); 
+			usuario.setSenha(CriptografiaUtil.criptografa(usuario.getSenha()));
+			if (usuarioNaoExiste()) {
+				dao.salvar(usuario);
 				String msg = "Usuario = " + usuario.getNome() + " salvo com sucesso!";
 				FacesMessage menssagem = new FacesMessage(FacesMessage.SEVERITY_INFO, msg, msg);
 				FacesContext contexto = FacesContext.getCurrentInstance();
 				contexto.addMessage(null, menssagem);
+			} else {
+				System.out.println("Usuário já está cadastrado, faça login ");
 			}
 
 		} catch (Exception e) {
@@ -72,14 +75,17 @@ public class CadastroUsuarioBean implements Serializable {
 			usuarios = dao.listar(usuario);
 
 		}
+	}
 
+	private boolean usuarioNaoExiste() {
+		return dao.verificaUsuarioExiste(usuario.getLogin());
 	}
 
 	public void editar(ActionEvent evento) {
 		comunidade = new Comunidade();
 		DaoComunidade dao = new DaoComunidade();
 		comunidades = dao.listar(comunidade);
-		
+
 		usuario = (Usuario) evento.getComponent().getAttributes().get("usuarioselecionado");
 		Messages.addFlashGlobalInfo("Nome: " + usuario.getNome());
 
